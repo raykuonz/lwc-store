@@ -1,3 +1,5 @@
+let debug = false;
+
 /**
  * State
  */
@@ -13,10 +15,12 @@ let subscribers = [];
  * @param {object} nextState
  */
 const setState = (nextState) => {
+    if (debug) console.log('previous state:', state);
     state = {
         ...state,
         ...nextState,
     };
+    if (debug) console.log('next state:', state);
     subscribers.forEach((subscriber) => {
         subscriber(state);
     })
@@ -52,9 +56,16 @@ const unsubscribe = (callback) => {
  */
 const StateMixin = (Base) => class extends Base {
 
-    debug = false; // Debug Mode
     state = state; // Current State
     _initState = state; // Initial State
+
+    /**
+     * Set Debug
+     * @param {boolean} bool
+     */
+    setDebug(bool = false) {
+        debug = bool;
+    }
 
     /**
      * Update State
@@ -75,9 +86,7 @@ const StateMixin = (Base) => class extends Base {
      * @param {object} nextState
      */
     setState = (nextState) => {
-        if (this.debug) console.log('previous state:', this.state);
         setState(nextState);
-        if (this.debug) console.log('next state:', this.state);
     }
 
     /**

@@ -32,7 +32,7 @@ const StoreMixin = (Base) => class extends StateMixin(Base) {
      */
     createStore(reducers, initialState, debug = false) {
 
-        this.debug = debug;
+        this.setDebug(debug);
 
         try {
             if (typeof reducers !== 'object') {
